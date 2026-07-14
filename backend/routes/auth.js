@@ -2,7 +2,14 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { pool } from '../config/db.js';
+<<<<<<< HEAD
 import { authenticateToken } from '../middleware/auth.js';
+=======
+<<<<<<< HEAD
+import { authenticateToken } from '../middleware/auth.js';
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 
 const router = express.Router();
 
@@ -42,12 +49,27 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const [result] = await pool.execute(
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       'INSERT INTO users (username, password, email, name, role) VALUES (?, ?, ?, ?, ?)',
       [username, hashedPassword, email, name, 'user']
     );
 
     const token = jwt.sign(
       { userId: result.insertId, username, role: 'user' },
+<<<<<<< HEAD
+=======
+=======
+      'INSERT INTO users (username, password, email, name) VALUES (?, ?, ?, ?)',
+      [username, hashedPassword, email, name]
+    );
+
+    const token = jwt.sign(
+      { userId: result.insertId, username },
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
@@ -59,8 +81,17 @@ router.post('/register', async (req, res) => {
         id: result.insertId,
         username,
         email,
+<<<<<<< HEAD
         name,
         role: 'user'
+=======
+<<<<<<< HEAD
+        name,
+        role: 'user'
+=======
+        name
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       }
     });
   } catch (error) {
@@ -94,7 +125,15 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
+<<<<<<< HEAD
       { userId: user.id, username: user.username, role: user.role },
+=======
+<<<<<<< HEAD
+      { userId: user.id, username: user.username, role: user.role },
+=======
+      { userId: user.id, username: user.username },
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
@@ -106,8 +145,17 @@ router.post('/login', async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+<<<<<<< HEAD
         name: user.name,
         role: user.role
+=======
+<<<<<<< HEAD
+        name: user.name,
+        role: user.role
+=======
+        name: user.name
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       }
     });
   } catch (error) {
@@ -116,6 +164,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 router.put('/profile', authenticateToken, async (req, res) => {
   try {
     const { email, name, password } = req.body;
@@ -197,4 +249,9 @@ router.put('/profile', authenticateToken, async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 export default router;

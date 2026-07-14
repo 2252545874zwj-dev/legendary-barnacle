@@ -3,7 +3,14 @@ export interface User {
   username: string;
   email: string;
   name: string;
+<<<<<<< HEAD
   role: string;
+=======
+<<<<<<< HEAD
+  role: string;
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   avatar?: string;
 }
 

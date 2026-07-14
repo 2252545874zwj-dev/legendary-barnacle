@@ -158,15 +158,23 @@ export const intentConfig = {
       action: true,
       requiresConfirmation: false,
       requiresUserId: true,
+<<<<<<< HEAD
       keywords: ['发布', '发帖', '发帖子', '写文章', '创建帖子', '标题', '内容'],
+=======
+      keywords: ['发布', '发帖', '发帖子', '写文章', '创建帖子'],
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       patterns: [
         /(发布|发|写|创建).*(帖子|文章)/,
         /发.*新.*帖子/,
         /写一篇.*文章/,
+<<<<<<< HEAD
         /发布.*关于.*帖子/,
         /我让你.*发布/,
         /发布.*类型.*标题.*内容/,
         /发布.*标题.*内容/
+=======
+        /发布.*关于.*帖子/
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
       ],
       requiredParams: ['title', 'content'],
       optionalParams: ['category'],

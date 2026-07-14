@@ -7,6 +7,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+node_modules/
+
+dist/
+
+.env
+
+*.log
+
+.vscode/
+
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 node_modules
 dist
 dist-ssr

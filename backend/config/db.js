@@ -1,6 +1,10 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import path from 'path';
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 
@@ -8,6 +12,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const envPath = path.join(__dirname, '../.env');
+<<<<<<< HEAD
+=======
+=======
+
+const envPath = path.join(path.dirname(new URL(import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, '$1'), '../../.env');
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 console.log('Trying to load .env from:', envPath);
 dotenv.config({ path: envPath });
 
@@ -46,12 +57,23 @@ const initDatabase = async () => {
         password VARCHAR(255) NOT NULL,
         email VARCHAR(100) NOT NULL UNIQUE,
         name VARCHAR(100) NOT NULL,
+<<<<<<< HEAD
         role VARCHAR(20) DEFAULT 'user',
+=======
+<<<<<<< HEAD
+        role VARCHAR(20) DEFAULT 'user',
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     const [userColumns] = await pool.execute(`DESCRIBE users`);
     const userColumnNames = userColumns.map(col => col.Field);
 
@@ -59,6 +81,11 @@ const initDatabase = async () => {
       await pool.execute(`ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'user' AFTER name`);
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS info_items (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -140,6 +167,10 @@ const initDatabase = async () => {
       }
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     const [adminResult] = await pool.execute('SELECT COUNT(*) as count FROM users WHERE username = ?', ['admin']);
     if (adminResult[0].count === 0) {
       const adminPassword = await bcrypt.hash('admin123', 10);
@@ -150,6 +181,11 @@ const initDatabase = async () => {
       console.log('Default admin account created: username=admin, password=admin123');
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     console.log('Database and tables initialized successfully');
   } catch (error) {
     console.error('Database initialization failed:', error);
@@ -157,6 +193,7 @@ const initDatabase = async () => {
   }
 };
 
+<<<<<<< HEAD
 const DB_RETRY_COUNT = 3;
 const DB_RETRY_DELAY = 1000;
 
@@ -200,3 +237,6 @@ async function checkDatabaseConnection() {
 }
 
 export { pool, initDatabase, executeWithRetry, checkDatabaseConnection };
+=======
+export { pool, initDatabase };
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465

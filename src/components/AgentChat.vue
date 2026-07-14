@@ -2,7 +2,15 @@
 import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+<<<<<<< HEAD
 import { MessageCircle, X, Send, Bot, User, BarChart3, Search, FileText, Sparkles, ChevronRight, Eye, Calendar, Check, XCircle, AlertCircle } from 'lucide-vue-next';
+=======
+<<<<<<< HEAD
+import { MessageCircle, X, Send, Bot, User, BarChart3, Search, FileText, Sparkles, ChevronRight, Eye, Calendar, Check, XCircle, AlertCircle } from 'lucide-vue-next';
+=======
+import { MessageCircle, X, Send, Bot, User, BarChart3, Search, FileText, Sparkles, ChevronRight, Eye, Calendar } from 'lucide-vue-next';
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 import { api, type AgentContext } from '../services/api';
 
 interface PostItem {
@@ -18,12 +26,21 @@ interface ChatMessage {
   content: string;
   timestamp: Date;
   postData?: PostItem[];
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   messageType?: 'text' | 'posts' | 'confirmation' | 'question' | 'success' | 'error';
   actionData?: {
     actionId: string;
     intentType: string;
     params: Record<string, any>;
   };
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 }
 
 const router = useRouter();
@@ -39,32 +56,72 @@ const isOpen = ref(false);
 const message = ref('');
 const messages = ref<ChatMessage[]>([]);
 const isLoading = ref(false);
+<<<<<<< HEAD
 const currentStreamingId = ref<number | null>(null);
+=======
+<<<<<<< HEAD
+const currentStreamingId = ref<number | null>(null);
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 
 const quickQuestions = [
   { text: '最近一周有多少新帖子？', icon: BarChart3 },
   { text: '各分类帖子数量', icon: BarChart3 },
   { text: '我发布了多少篇帖子？', icon: FileText },
   { text: '帮我搜索技术相关帖子', icon: Search },
+<<<<<<< HEAD
   { text: '推荐一些帖子', icon: Sparkles },
   { text: '发布一篇技术帖子', icon: FileText }
+=======
+<<<<<<< HEAD
+  { text: '推荐一些帖子', icon: Sparkles },
+  { text: '发布一篇技术帖子', icon: FileText }
+=======
+  { text: '推荐一些帖子', icon: Sparkles }
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 ];
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value;
   if (isOpen.value && messages.value.length === 0) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     addAgentMessage('您好！我是信息论坛的智能助手，请问有什么可以帮助您的？\n\n您可以点击下方快捷问题快速了解论坛数据，也可以直接输入您的问题。\n\n💡 新功能：您可以说"发布一篇关于Vue的帖子"让我帮您发布！');
   }
 };
 
 const addAgentMessage = (content: string, postData?: PostItem[], messageType?: ChatMessage['messageType'], actionData?: ChatMessage['actionData']) => {
+<<<<<<< HEAD
+=======
+=======
+    addAgentMessage('您好！我是信息论坛的智能助手，请问有什么可以帮助您的？\n\n您可以点击下方快捷问题快速了解论坛数据，也可以直接输入您的问题。');
+  }
+};
+
+const addAgentMessage = (content: string, postData?: PostItem[]) => {
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   messages.value.push({
     type: 'agent',
     content,
     timestamp: new Date(),
+<<<<<<< HEAD
     postData,
     messageType: messageType || 'text',
     actionData
+=======
+<<<<<<< HEAD
+    postData,
+    messageType: messageType || 'text',
+    actionData
+=======
+    postData
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   });
   scrollToBottom();
 };
@@ -93,6 +150,10 @@ const handleSend = async () => {
   message.value = '';
   isLoading.value = true;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   messages.value.push({
     type: 'agent',
     content: '',
@@ -167,16 +228,44 @@ const handleConfirmAction = async (actionId: string) => {
   } catch (error) {
     console.error('Confirm action error:', error);
     addAgentMessage('操作失败，请稍后重试');
+<<<<<<< HEAD
+=======
+=======
+  try {
+    const response = await api.agentAsk(userId, question, props.context);
+    if (response.success) {
+      if (response.interactionType === 'posts' && response.data) {
+        addAgentMessage(response.answer, response.data);
+      } else {
+        addAgentMessage(response.answer);
+      }
+    } else {
+      addAgentMessage('抱歉，我暂时无法回答您的问题');
+    }
+  } catch (error) {
+    console.error('Agent error:', error);
+    addAgentMessage('抱歉，服务暂时不可用，请稍后重试');
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   } finally {
     isLoading.value = false;
   }
 };
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 const handleCancelAction = () => {
   addUserMessage('取消');
   addAgentMessage('操作已取消');
 };
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 const handleQuickQuestion = async (question: string) => {
   message.value = question;
   await handleSend();
@@ -208,6 +297,10 @@ const getCategoryColor = (category: string) => {
   return colors[category] || 'bg-gray-100 text-gray-700';
 };
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 const getMessageBgClass = (msg: ChatMessage) => {
   if (msg.type === 'user') {
     return 'bg-indigo-600 text-white rounded-br-md';
@@ -227,6 +320,11 @@ const getMessageBgClass = (msg: ChatMessage) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 const chatContainer = ref<HTMLElement | null>(null);
 
 const scrollToBottom = () => {
@@ -297,6 +395,10 @@ watch(messages, () => {
           </div>
           <div
             :class="[
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
               'max-w-[75%] px-4 py-2.5 rounded-2xl border shadow-sm',
               getMessageBgClass(msg)
             ]"
@@ -308,6 +410,20 @@ watch(messages, () => {
               <p class="text-sm leading-relaxed whitespace-pre-wrap flex-1">{{ msg.content }}</p>
             </div>
             
+<<<<<<< HEAD
+=======
+=======
+              'max-w-[75%] px-4 py-2.5 rounded-2xl',
+              msg.type === 'user'
+                ? 'bg-indigo-600 text-white rounded-br-md'
+                : 'bg-white text-gray-800 rounded-bl-md border border-gray-200 shadow-sm'
+            ]"
+          >
+            <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ msg.content }}</p>
+            
+            <!-- 帖子列表 -->
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
             <div v-if="msg.postData && msg.postData.length > 0" class="mt-3 space-y-2">
               <div
                 v-for="post in msg.postData"
@@ -337,6 +453,10 @@ watch(messages, () => {
               </div>
             </div>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
             <div v-if="msg.messageType === 'confirmation' && msg.actionData" class="mt-3 flex gap-2">
               <button
                 @click="handleConfirmAction(msg.actionData.actionId)"
@@ -354,6 +474,11 @@ watch(messages, () => {
               </button>
             </div>
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
             <span
               :class="[
                 'text-xs mt-1.5 block',
@@ -365,7 +490,15 @@ watch(messages, () => {
           </div>
         </div>
 
+<<<<<<< HEAD
         <div v-if="isLoading && !messages.length" class="flex justify-center py-2">
+=======
+<<<<<<< HEAD
+        <div v-if="isLoading && !messages.length" class="flex justify-center py-2">
+=======
+        <div v-if="isLoading" class="flex justify-center py-2">
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
           <div class="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
@@ -405,4 +538,12 @@ watch(messages, () => {
       </div>
     </div>
   </div>
+<<<<<<< HEAD
 </template>
+=======
+<<<<<<< HEAD
+</template>
+=======
+</template>
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465

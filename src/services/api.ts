@@ -50,6 +50,10 @@ export interface AgentContext {
 }
 
 export interface AgentResponse {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
   success: boolean;
   answer: string;
   interactionType?: string;
@@ -64,6 +68,15 @@ export interface AdminUser {
   name: string;
   role: string;
   created_at: string;
+<<<<<<< HEAD
+=======
+=======
+ success: boolean;
+ answer: string;
+ interactionType: string;
+ data?: any;
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 }
 
 export const api = {
@@ -127,6 +140,10 @@ export const api = {
  params: { userId }
  });
  },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
  agentAsk: async (userId: number, question: string, context?: AgentContext, actionId?: string, confirm?: boolean): Promise<AgentResponse> => {
  const response = await apiClient.post<AgentResponse>('/agent/ask', {
  userId,
@@ -138,6 +155,7 @@ export const api = {
  return response.data;
  },
  agentAskStream: async (userId: number, question: string, context?: AgentContext, onChunk?: (chunk: string) => void, onComplete?: (fullAnswer: string) => void, onError?: (error: string) => void): Promise<void> => {
+<<<<<<< HEAD
  const headers: HeadersInit = {
  'Content-Type': 'application/json',
  };
@@ -178,6 +196,84 @@ export const api = {
  throw error;
  }
  },
+=======
+ return new Promise((resolve, reject) => {
+ const xhr = new XMLHttpRequest();
+ xhr.open('POST', `${baseURL}/agent/ask`, true);
+ xhr.setRequestHeader('Content-Type', 'application/json');
+ const token = localStorage.getItem('token');
+ if (token) {
+ xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+ }
+ let fullAnswer = '';
+ let lastProcessedLength = 0;
+ xhr.onreadystatechange = () => {
+ console.log('[API] readyState:', xhr.readyState, 'status:', xhr.status);
+ if (xhr.readyState === 3) {
+ const responseText = xhr.responseText;
+ console.log('[API] responseText length:', responseText.length);
+ const newContent = responseText.slice(lastProcessedLength);
+ console.log('[API] newContent:', newContent.substring(0, 50));
+ const parts = newContent.split('\n\n');
+ console.log('[API] parts count:', parts.length);
+ for (const part of parts) {
+ if (part.startsWith('data: ')) {
+ try {
+ const jsonStr = part.slice(6);
+ const data = JSON.parse(jsonStr);
+ console.log('[API] parsed data:', data);
+ if (data.type === 'stream' && data.content && onChunk) {
+ fullAnswer += data.content;
+ onChunk(data.content);
+ } else if (data.type === 'end' && onComplete) {
+ onComplete(fullAnswer);
+ resolve();
+ } else if (data.type === 'error' && onError) {
+ onError(data.content);
+ reject(new Error(data.content));
+ }
+ } catch (e) {
+ console.error('[API] parse error:', e);
+ }
+ }
+ }
+ lastProcessedLength = responseText.length;
+ } else if (xhr.readyState === 4) {
+ console.log('[API] request complete, fullAnswer:', fullAnswer.length);
+ if (xhr.status === 200 && fullAnswer && onComplete) {
+ onComplete(fullAnswer);
+ resolve();
+ } else if (xhr.status !== 200 && onError) {
+ onError('请求失败');
+ reject(new Error('请求失败'));
+ }
+ }
+ };
+ xhr.onerror = () => {
+ if (onError) {
+ onError('网络错误');
+ }
+ reject(new Error('网络错误'));
+ };
+ xhr.send(JSON.stringify({
+ userId,
+ question,
+ context,
+ stream: true
+ }));
+ });
+ },
+=======
+ agentAsk: async (userId: number, question: string, context?: AgentContext): Promise<AgentResponse> => {
+ const response = await apiClient.post<AgentResponse>('/agent/ask', {
+ userId,
+ question,
+ context
+ });
+ return response.data;
+ },
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
  agentAnalyze: async (userId: number, infoId: number, analysisType?: string): Promise<AgentResponse> => {
  const response = await apiClient.post<AgentResponse>('/agent/analyze', {
  userId,
@@ -187,6 +283,10 @@ export const api = {
  return response.data;
  },
  agentHistory: async (userId: number, page = 1, pageSize = 10): Promise<any> => {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     const response = await apiClient.get('/agent/history', {
       params: { userId, page, pageSize }
     });
@@ -207,4 +307,14 @@ export const api = {
     const response = await apiClient.put('/auth/profile', data);
     return response.data;
   }
+<<<<<<< HEAD
+=======
+=======
+ const response = await apiClient.get('/agent/history', {
+ params: { userId, page, pageSize }
+ });
+ return response.data;
+ }
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 };

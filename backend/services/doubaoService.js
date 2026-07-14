@@ -9,17 +9,24 @@ const ARK_API_KEY = process.env.ARK_API_KEY || '';
 const ARK_API_URL = 'https://ark.cn-beijing.volces.com/api/v3/responses';
 const DOBAO_MODEL = process.env.DOBAO_MODEL || 'doubao-seed-1-8-251228';
 
+<<<<<<< HEAD
 const MAX_RETRIES = 2;
 const TIMEOUT = 15000;
 
+=======
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 const doubaoClient = axios.create({
   baseURL: ARK_API_URL,
   headers: {
     'Authorization': `Bearer ${ARK_API_KEY}`,
     'Content-Type': 'application/json'
   },
+<<<<<<< HEAD
   responseType: 'json',
   timeout: TIMEOUT
+=======
+  responseType: 'json'
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 });
 
 /**
@@ -28,6 +35,7 @@ const doubaoClient = axios.create({
  * @returns {string} - AI回复内容
  */
 async function _callAPI(prompt) {
+<<<<<<< HEAD
   let lastError = null;
   
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -74,6 +82,43 @@ async function _callAPI(prompt) {
   }
   
   throw lastError;
+=======
+  try {
+    console.log('Doubao API request:', { prompt });
+
+    const response = await doubaoClient.post('', {
+      "model": DOBAO_MODEL,
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": prompt
+            }
+          ]
+        }
+      ]
+    });
+
+    const data = response.data;
+    
+    // 解析响应
+    if (data && data.output && data.output.length > 0) {
+      const messageOutput = data.output.find(item => item.type === 'message' && item.role === 'assistant');
+      if (messageOutput && messageOutput.content && messageOutput.content.length > 0) {
+        const textContent = messageOutput.content.find(item => item.type === 'output_text');
+        if (textContent && textContent.text) {
+          return textContent.text;
+        }
+      }
+    }
+    return '没有返回内容';
+  } catch (error) {
+    console.error('Doubao API error:', error.response?.data || error.message);
+    throw error;
+  }
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
 }
 
 export const doubaoService = {

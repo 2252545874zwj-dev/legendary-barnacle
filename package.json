@@ -24,8 +24,16 @@
     "mysql2": "^3.22.3",
     "pinia": "^3.0.4",
     "postcss": "^8.5.12",
+<<<<<<< HEAD
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
+=======
+<<<<<<< HEAD
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
+>>>>>>> a648754d40cbc3e44cd03f0cf82527487e5b6465
     "tailwindcss": "^3.4.14",
     "vue": "^3.5.13",
     "vue-router": "^5.0.6"
