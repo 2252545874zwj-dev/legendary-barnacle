@@ -1,5 +1,6 @@
 import express from 'express';
 import { pool } from '../config/db.js';
+<<<<<<< HEAD
 import { io } from '../server.js';
 import { authenticateToken } from '../middleware/auth.js';
 
@@ -9,6 +10,16 @@ router.get('/search', authenticateToken, async (req, res) => {
   try {
     const { keyword = '', category = 'all', page = 1, pageSize = 10, userId = null, privacy = 'all' } = req.query;
 
+=======
+
+const router = express.Router();
+
+router.get('/search', async (req, res) => {
+  try {
+    const { keyword = '', category = 'all', page = 1, pageSize = 10, userId = null, privacy = 'all' } = req.query;
+
+    // 安全校验：限制分页参数范围（防止 SQL 注入）
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
     const pageNum = Math.max(1, parseInt(page) || 1);
     const sizeNum = Math.min(50, Math.max(1, parseInt(pageSize) || 10));
     const parsedUserId = userId ? parseInt(userId) : null;
@@ -16,6 +27,7 @@ router.get('/search', authenticateToken, async (req, res) => {
     let query = 'SELECT * FROM info_items WHERE ';
     const params = [];
 
+<<<<<<< HEAD
     if (req.user.role === 'admin') {
       if (privacy === 'public') {
         query += 'is_private = 0';
@@ -25,6 +37,9 @@ router.get('/search', authenticateToken, async (req, res) => {
         query += '1 = 1';
       }
     } else if (privacy === 'public') {
+=======
+    if (privacy === 'public') {
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       query += 'is_private = 0';
     } else if (privacy === 'private') {
       if (parsedUserId && parsedUserId > 0) {
@@ -138,11 +153,16 @@ router.get('/:id/comments', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 router.get('/:id', authenticateToken, async (req, res) => {
+=======
+router.get('/:id', async (req, res) => {
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   try {
     const { userId } = req.query;
     const parsedUserId = userId ? parseInt(userId) : null;
 
+<<<<<<< HEAD
     let query = 'SELECT * FROM info_items WHERE id = ?';
     const params = [req.params.id];
 
@@ -154,6 +174,12 @@ router.get('/:id', authenticateToken, async (req, res) => {
     }
 
     const [items] = await pool.execute(query, params);
+=======
+    const [items] = await pool.execute(
+      'SELECT * FROM info_items WHERE id = ? AND (is_private = 0 OR user_id = ?)',
+      [req.params.id, parsedUserId || null]
+    );
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
     if (items.length === 0) {
       return res.status(404).json({ message: '信息不存在或无权限访问' });
@@ -202,6 +228,7 @@ router.post('/', async (req, res) => {
       message: '信息添加成功',
       id: result.insertId
     });
+<<<<<<< HEAD
 
     io.emit('infoCreated', {
       id: result.insertId,
@@ -211,6 +238,8 @@ router.post('/', async (req, res) => {
       userId,
       isPrivate: isPrivate ? 1 : 0
     });
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   } catch (error) {
     console.error('Add info error:', error);
     res.status(500).json({ message: '服务器内部错误' });
@@ -236,6 +265,7 @@ router.put('/:id', async (req, res) => {
     );
 
     res.json({ message: '信息更新成功' });
+<<<<<<< HEAD
 
     io.emit('infoUpdated', {
       id: parseInt(req.params.id),
@@ -244,13 +274,19 @@ router.put('/:id', async (req, res) => {
       category,
       isPrivate: isPrivate ? 1 : 0
     });
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   } catch (error) {
     console.error('Update info error:', error);
     res.status(500).json({ message: '服务器内部错误' });
   }
 });
 
+<<<<<<< HEAD
 router.delete('/:id', authenticateToken, async (req, res) => {
+=======
+router.delete('/:id', async (req, res) => {
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   try {
     const { userId } = req.query;
     const parsedUserId = userId ? parseInt(userId) : null;
@@ -260,6 +296,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     const [items] = await pool.execute(
+<<<<<<< HEAD
       'SELECT * FROM info_items WHERE id = ?',
       [req.params.id]
     );
@@ -270,6 +307,13 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
     const item = items[0];
     if (req.user.role !== 'admin' && item.user_id !== parsedUserId) {
+=======
+      'SELECT * FROM info_items WHERE id = ? AND user_id = ?',
+      [req.params.id, parsedUserId]
+    );
+
+    if (items.length === 0) {
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       return res.status(403).json({ message: '无权限删除此信息' });
     }
 
@@ -277,10 +321,13 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     await pool.execute('DELETE FROM info_items WHERE id = ?', [req.params.id]);
 
     res.json({ message: '信息删除成功' });
+<<<<<<< HEAD
 
     io.emit('infoDeleted', {
       id: parseInt(req.params.id)
     });
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   } catch (error) {
     console.error('Delete info error:', error);
     res.status(500).json({ message: '服务器内部错误' });
@@ -304,6 +351,7 @@ router.post('/:id/comments', async (req, res) => {
       message: '留言成功',
       id: result.insertId
     });
+<<<<<<< HEAD
 
     io.emit('commentAdded', {
       id: result.insertId,
@@ -312,6 +360,8 @@ router.post('/:id/comments', async (req, res) => {
       userName,
       content
     });
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   } catch (error) {
     console.error('Add comment error:', error);
     res.status(500).json({ message: '服务器内部错误' });
@@ -339,10 +389,13 @@ router.delete('/comments/:id', async (req, res) => {
     await pool.execute('DELETE FROM comments WHERE id = ?', [req.params.id]);
 
     res.json({ message: '留言删除成功' });
+<<<<<<< HEAD
 
     io.emit('commentDeleted', {
       id: parseInt(req.params.id)
     });
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   } catch (error) {
     console.error('Delete comment error:', error);
     res.status(500).json({ message: '服务器内部错误' });

@@ -12,9 +12,13 @@ import {
   isThanks, 
   isHelpRequest,
   hasSummaryIntent,
+<<<<<<< HEAD
   hasExplainIntent,
   getIntentByType,
   intentConfig
+=======
+  hasExplainIntent 
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 } from '../services/intentService.js';
 import { 
   searchPosts, 
@@ -26,24 +30,38 @@ import {
   getTotalUsers,
   getCategoryStats,
   getLatestPosts,
+<<<<<<< HEAD
   getSystemOverview,
   getPostById,
   getPostsByKeyword
+=======
+  getSystemOverview
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 } from '../services/searchService.js';
 
 const router = express.Router();
 
+<<<<<<< HEAD
 const conversationHistory = new Map();
 const pendingActions = new Map();
 
 router.post('/ask', async (req, res) => {
   try {
     const { userId, question, sessionId, stream = false, actionId, confirm = false } = req.body;
+=======
+// 存储对话历史（模拟会话管理）
+const conversationHistory = new Map();
+
+router.post('/ask', async (req, res) => {
+  try {
+    const { userId, question, sessionId, stream = false } = req.body;
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
     console.log('Received question:', question);
     console.log('User ID:', userId);
     console.log('Session ID:', sessionId);
     console.log('Stream mode:', stream);
+<<<<<<< HEAD
     console.log('Action ID:', actionId);
     console.log('Confirm:', confirm);
 
@@ -51,11 +69,20 @@ router.post('/ask', async (req, res) => {
       return res.status(400).json({ message: '问题不能为空' });
     }
 
+=======
+
+    if (!question) {
+      return res.status(400).json({ message: '问题不能为空' });
+    }
+
+    // 获取对话历史
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
     let history = [];
     if (sessionId && conversationHistory.has(sessionId)) {
       history = conversationHistory.get(sessionId);
     }
 
+<<<<<<< HEAD
     if (actionId && confirm) {
       const result = await executePendingAction(actionId, userId);
       if (sessionId) {
@@ -67,6 +94,11 @@ router.post('/ask', async (req, res) => {
     }
 
     if (stream) {
+=======
+    // 检查是否需要流式输出
+    if (stream) {
+      // 设置SSE响应头
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
@@ -75,6 +107,7 @@ router.post('/ask', async (req, res) => {
       let fullAnswer = '';
 
       try {
+<<<<<<< HEAD
         console.log('[STREAM] Starting stream response');
         for await (const char of analyzeIntentAndReplyStream(userId, question, history)) {
           fullAnswer += char;
@@ -89,6 +122,24 @@ router.post('/ask', async (req, res) => {
         if (sessionId) {
           history.push({ question, answer: fullAnswer });
           if (history.length > 10) history.shift();
+=======
+        // 流式回答
+        for await (const char of analyzeIntentAndReplyStream(userId, question, history)) {
+          fullAnswer += char;
+          res.write(`data: ${JSON.stringify({ type: 'stream', content: char })}\n\n`);
+        }
+
+        // 发送结束信号
+        res.write(`data: ${JSON.stringify({ type: 'end', content: fullAnswer })}\n\n`);
+        res.end();
+
+        // 更新对话历史
+        if (sessionId) {
+          history.push({ question, answer: fullAnswer });
+          if (history.length > 10) {
+            history.shift();
+          }
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
           conversationHistory.set(sessionId, history);
         }
 
@@ -102,11 +153,23 @@ router.post('/ask', async (req, res) => {
         res.end();
       }
     } else {
+<<<<<<< HEAD
       const result = await analyzeIntentAndReply(userId, question, history);
 
       if (sessionId) {
         history.push({ question, answer: result.answer });
         if (history.length > 10) history.shift();
+=======
+      // 普通模式
+      const result = await analyzeIntentAndReply(userId, question, history);
+
+      // 更新对话历史（保留最近10条）
+      if (sessionId) {
+        history.push({ question, answer: result.answer });
+        if (history.length > 10) {
+          history.shift();
+        }
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
         conversationHistory.set(sessionId, history);
       }
 
@@ -123,19 +186,36 @@ router.post('/ask', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 async function analyzeIntentAndReply(userId, question, history = []) {
+=======
+// 智能意图分析函数
+async function analyzeIntentAndReply(userId, question, history = []) {
+  // 0. 总结意图优先检测！如果包含"总结"或"概括"关键词，直接走AI路径
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   if (hasSummaryIntent(question)) {
     return await handleWithDoubaoAI(userId, question, history);
   }
 
+<<<<<<< HEAD
   if (isGreeting(question)) {
     return {
       answer: '您好！我是信息论坛的智能助手，请问有什么可以帮助您的？\n\n您可以问我：\n- 搜索技术相关内容（如"云计算"、"Vue"）\n- 查看最新发布的内容\n- 查询论坛统计信息\n- 总结文章内容\n- 发布/删除/修改帖子（如"发布一篇关于Vue的帖子"）',
+=======
+  // 1. 问候语检测
+  if (isGreeting(question)) {
+    return {
+      answer: '您好！我是信息论坛的智能助手，请问有什么可以帮助您的？\n\n您可以问我：\n- 搜索技术相关内容（如"云计算"、"Vue"）\n- 查看最新发布的内容\n- 查询论坛统计信息\n- 总结文章内容',
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       type: 'text',
       data: null
     };
   }
 
+<<<<<<< HEAD
+=======
+  // 2. 感谢语检测
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   if (isThanks(question)) {
     return {
       answer: '不客气！有问题随时问我。',
@@ -144,19 +224,31 @@ async function analyzeIntentAndReply(userId, question, history = []) {
     };
   }
 
+<<<<<<< HEAD
   if (isHelpRequest(question)) {
     return {
       answer: '我可以帮助您：\n\n📊 查询统计信息：\n- 内容数量、浏览量、用户数\n- 各分类内容统计\n\n🔍 搜索内容：\n- 搜索特定内容\n- 查看最新发布的内容\n- 搜索技术相关文章\n\n👤 个人信息：\n- 查询您发布的内容数量\n- 查看您发布的内容列表\n\n📝 操作功能：\n- 发布帖子（如"发布一篇关于Vue的帖子"）\n- 删除帖子（如"删除ID为1的帖子"）\n- 修改帖子（如"修改帖子标题"）\n\n🤖 AI智能问答：\n- 总结文章内容\n- 分析问题\n- 解答各类问题',
+=======
+  // 3. 帮助请求检测
+  if (isHelpRequest(question)) {
+    return {
+      answer: '我可以帮助您：\n\n📊 查询统计信息：\n- 内容数量、浏览量、用户数\n- 各分类内容统计\n\n🔍 搜索内容：\n- 搜索特定内容\n- 查看最新发布的内容\n- 搜索技术相关文章\n\n👤 个人信息：\n- 查询您发布的内容数量\n- 查看您发布的内容列表\n\n🤖 AI智能问答：\n- 总结文章内容\n- 分析问题\n- 解答各类问题',
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       type: 'text',
       data: null
     };
   }
 
+<<<<<<< HEAD
+=======
+  // 4. 智能意图识别
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   const intent = smartIdentifyIntent(question, userId);
   
   console.log(`[DEBUG] 识别到的意图: ${intent.type}`);
   console.log(`[DEBUG] 意图关键词: ${JSON.stringify(intent.keywords)}`);
   
+<<<<<<< HEAD
   const intentConfigItem = getIntentByType(intent.type);
   
   if (intentConfigItem && intentConfigItem.action) {
@@ -165,6 +257,14 @@ async function analyzeIntentAndReply(userId, question, history = []) {
   
   const databaseIntents = ['my_posts_count', 'my_posts_list', 'total_posts', 'total_views', 'total_comments', 'total_users', 'category_stats', 'latest_posts', 'search_posts'];
   
+=======
+  // 对于需要查询数据库的精确意图，使用本地处理（保证数据准确性）
+  const databaseIntents = ['my_posts_count', 'my_posts_list', 'total_posts', 'total_views', 'total_comments', 'total_users', 'category_stats', 'latest_posts', 'search_posts'];
+  
+  console.log(`[DEBUG] 是否在数据库意图列表中: ${databaseIntents.includes(intent.type)}`);
+  
+  // 如果是search_posts意图，确保走搜索路径
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   if (intent.type === 'search_posts' && intent.keywords.length > 0) {
     return await searchPosts(question, intent.keywords);
   }
@@ -205,6 +305,7 @@ async function analyzeIntentAndReply(userId, question, history = []) {
     }
   }
   
+<<<<<<< HEAD
   return await handleWithDoubaoAI(userId, question, history);
 }
 
@@ -531,10 +632,21 @@ function getCategoryDisplayName(category) {
 
 async function* analyzeIntentAndReplyStream(userId, question, history = []) {
   try {
+=======
+  // 所有其他问题（包括详细解释请求）都使用豆包 AI 进行智能回答
+  return await handleWithDoubaoAI(userId, question, history);
+}
+
+// 流式版本的意图分析和回答
+async function* analyzeIntentAndReplyStream(userId, question, history = []) {
+  try {
+    // 先获取完整回答
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
     const result = await analyzeIntentAndReply(userId, question, history);
     
     const answer = result.answer || '抱歉，我暂时无法回答您的问题。';
     
+<<<<<<< HEAD
     for (let i = 0; i < answer.length; i++) {
       yield answer[i];
       const char = answer[i];
@@ -546,6 +658,21 @@ async function* analyzeIntentAndReplyStream(userId, question, history = []) {
         await new Promise(resolve => setTimeout(resolve, 15));
       } else {
         await new Promise(resolve => setTimeout(resolve, 40));
+=======
+    // 逐字输出
+    for (let i = 0; i < answer.length; i++) {
+      yield answer[i];
+      // 根据字符类型调整延迟
+      const char = answer[i];
+      if (/[\u4e00-\u9fa5]/.test(char)) {
+        await new Promise(resolve => setTimeout(resolve, 30)); // 中文字符
+      } else if (/[a-zA-Z]/.test(char)) {
+        await new Promise(resolve => setTimeout(resolve, 20)); // 英文字母
+      } else if (/[0-9]/.test(char)) {
+        await new Promise(resolve => setTimeout(resolve, 15)); // 数字
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 40)); // 标点符号
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       }
     }
   } catch (error) {
@@ -554,8 +681,15 @@ async function* analyzeIntentAndReplyStream(userId, question, history = []) {
   }
 }
 
+<<<<<<< HEAD
 async function handleWithDoubaoAI(userId, question, history = []) {
   try {
+=======
+// 使用豆包 AI 处理问题
+async function handleWithDoubaoAI(userId, question, history = []) {
+  try {
+    // 检查是否是需要登录的请求（如"我的帖子"）
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
     const myPostsPatterns = [
       /我.*(发布|发).*帖子/,
       /(我的|我).*帖子.*(有|数量|多少|列表|哪些)/,
@@ -574,8 +708,15 @@ async function handleWithDoubaoAI(userId, question, history = []) {
       };
     }
     
+<<<<<<< HEAD
     const overview = await getSystemOverview(userId);
     
+=======
+    // 获取系统概览信息作为上下文
+    const overview = await getSystemOverview(userId);
+    
+    // 构建上下文信息
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
     let context = `论坛基本信息：\n`;
     context += `- 总帖子数：${overview.totalPosts}篇\n`;
     context += `- 总浏览量：${overview.totalViews}次\n`;
@@ -590,6 +731,7 @@ async function handleWithDoubaoAI(userId, question, history = []) {
       context += `${index + 1}.【${p.category}】${p.title} - 浏览量: ${p.viewCount}\n`;
     });
     
+<<<<<<< HEAD
     const summaryPattern = /(总结|概括|概要|摘要|详细描述|描述一下|具体内容|内容是什么|讲一下|介绍一下|内容是|具体说明|说明一下)/;
     const idPattern = /帖子(\d+)|ID(\d+)|编号(\d+)/;
     const hasSummaryIntent = summaryPattern.test(question);
@@ -658,12 +800,21 @@ async function handleWithDoubaoAI(userId, question, history = []) {
     
     const relatedPosts = await searchPosts(question, []);
     if (relatedPosts.data && relatedPosts.data.length > 0 && !hasSummaryIntent) {
+=======
+    // 如果有相关帖子内容，添加到上下文
+    const relatedPosts = await searchPosts(question, []);
+    if (relatedPosts.data && relatedPosts.data.length > 0) {
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       context += `\n相关帖子内容：\n`;
       relatedPosts.data.slice(0, 2).forEach((p, index) => {
         context += `帖子${index + 1}：${p.title}\n`;
       });
     }
     
+<<<<<<< HEAD
+=======
+    // 调用豆包AI获取回答
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
     const result = await doubaoService.ask(question, context);
     
     return {
@@ -681,4 +832,8 @@ async function handleWithDoubaoAI(userId, question, history = []) {
   }
 }
 
+<<<<<<< HEAD
 export default router;
+=======
+export default router;
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65

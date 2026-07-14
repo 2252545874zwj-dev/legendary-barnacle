@@ -50,6 +50,7 @@ export interface AgentContext {
 }
 
 export interface AgentResponse {
+<<<<<<< HEAD
   success: boolean;
   answer: string;
   interactionType?: string;
@@ -64,6 +65,12 @@ export interface AdminUser {
   name: string;
   role: string;
   created_at: string;
+=======
+ success: boolean;
+ answer: string;
+ interactionType: string;
+ data?: any;
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 }
 
 export const api = {
@@ -127,6 +134,7 @@ export const api = {
  params: { userId }
  });
  },
+<<<<<<< HEAD
  agentAsk: async (userId: number, question: string, context?: AgentContext, actionId?: string, confirm?: boolean): Promise<AgentResponse> => {
  const response = await apiClient.post<AgentResponse>('/agent/ask', {
  userId,
@@ -204,6 +212,16 @@ export const api = {
  }));
  });
  },
+=======
+ agentAsk: async (userId: number, question: string, context?: AgentContext): Promise<AgentResponse> => {
+ const response = await apiClient.post<AgentResponse>('/agent/ask', {
+ userId,
+ question,
+ context
+ });
+ return response.data;
+ },
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
  agentAnalyze: async (userId: number, infoId: number, analysisType?: string): Promise<AgentResponse> => {
  const response = await apiClient.post<AgentResponse>('/agent/analyze', {
  userId,
@@ -213,6 +231,7 @@ export const api = {
  return response.data;
  },
  agentHistory: async (userId: number, page = 1, pageSize = 10): Promise<any> => {
+<<<<<<< HEAD
     const response = await apiClient.get('/agent/history', {
       params: { userId, page, pageSize }
     });
@@ -233,4 +252,11 @@ export const api = {
     const response = await apiClient.put('/auth/profile', data);
     return response.data;
   }
+=======
+ const response = await apiClient.get('/agent/history', {
+ params: { userId, page, pageSize }
+ });
+ return response.data;
+ }
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 };

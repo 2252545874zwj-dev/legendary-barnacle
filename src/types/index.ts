@@ -3,7 +3,10 @@ export interface User {
   username: string;
   email: string;
   name: string;
+<<<<<<< HEAD
   role: string;
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   avatar?: string;
 }
 

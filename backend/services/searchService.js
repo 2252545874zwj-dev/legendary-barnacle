@@ -385,6 +385,7 @@ async function getSystemOverview(userId = null) {
 }
 
 // 导出所有函数
+<<<<<<< HEAD
 async function getPostById(postId) {
   const [posts] = await pool.execute(
     'SELECT id, title, content, category, user_id, view_count, created_at FROM info_items WHERE id = ?',
@@ -425,6 +426,8 @@ async function getPostsByKeyword(keyword, limit = 5) {
   }));
 }
 
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 export {
   searchPosts,
   getMyPostsList,
@@ -436,7 +439,11 @@ export {
   getCategoryStats,
   getSystemOverview,
   getLatestPosts,
+<<<<<<< HEAD
   calculateMatchScore,
   getPostById,
   getPostsByKeyword
+=======
+  calculateMatchScore
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 };

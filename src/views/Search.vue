@@ -1,4 +1,5 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
@@ -7,6 +8,15 @@ import { Search, LogOut, User, Clock, ChevronRight, ArrowLeft, ArrowRight, Filte
 import RichTextEditor from '../components/RichTextEditor.vue'
 import { truncateText } from '../utils/markdown'
 import { connectSocket, onInfoCreated, onInfoUpdated, onInfoDeleted, offInfoCreated, offInfoUpdated, offInfoDeleted, disconnectSocket } from '../services/socket'
+=======
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+import { useInfoStore } from '../stores/info'
+import { Search, LogOut, User, Clock, ChevronRight, ArrowLeft, ArrowRight, Filter, X, Plus, Trash2, Eye, EyeOff, Edit2, Save, XCircle } from 'lucide-vue-next'
+import RichTextEditor from '../components/RichTextEditor.vue'
+import { truncateText } from '../utils/markdown'
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -103,10 +113,13 @@ const isOwnItem = (item: { userId?: number }) => {
   return item.userId === parseInt(authStore.user?.id || '0')
 }
 
+<<<<<<< HEAD
 const isAdmin = () => {
   return authStore.user?.role === 'admin'
 }
 
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 const handleAddInfo = async () => {
   if (!newItem.value.title || !newItem.value.content || !newItem.value.category) {
     alert('请填写完整信息')
@@ -182,6 +195,7 @@ const handleDeleteInfo = async (id: string) => {
   }
 }
 
+<<<<<<< HEAD
 const handleInfoCreated = async () => {
   await infoStore.search(keyword.value, selectedCategory.value, currentPage.value, 10, parseInt(authStore.user?.id || '0'), privacyFilter.value)
 }
@@ -209,6 +223,12 @@ onUnmounted(() => {
   offInfoDeleted(handleInfoDeleted)
   disconnectSocket()
 })
+=======
+onMounted(async () => {
+  categories.value = await infoStore.getCategories()
+  await infoStore.search('', 'all', 1, 10, parseInt(authStore.user?.id || '0'))
+})
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 </script>
 
 <template>
@@ -226,6 +246,7 @@ onUnmounted(() => {
           <div class="flex items-center gap-2 text-gray-600">
             <User class="w-5 h-5" />
             <span>{{ authStore.user?.name }}</span>
+<<<<<<< HEAD
             <span v-if="isAdmin()" class="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700">
               <Shield class="w-3 h-3" />
               管理员
@@ -249,6 +270,10 @@ onUnmounted(() => {
             <span>管理用户</span>
           </button>
           <button
+=======
+          </div>
+          <button
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
             @click="handleLogout"
             class="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           >
@@ -514,10 +539,17 @@ onUnmounted(() => {
                   <Edit2 class="w-4 h-4" />
                 </button>
                 <button
+<<<<<<< HEAD
                   v-if="isOwnItem(item) || isAdmin()"
                   @click.stop="handleDeleteInfo(item.id)"
                   class="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   :title="isAdmin() ? '管理员删除' : '删除'"
+=======
+                  v-if="isOwnItem(item)"
+                  @click.stop="handleDeleteInfo(item.id)"
+                  class="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  title="删除"
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
                 >
                   <Trash2 class="w-4 h-4" />
                 </button>

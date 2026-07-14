@@ -1,12 +1,19 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import { ref, onMounted, onUnmounted } from 'vue'
+=======
+import { ref, onMounted } from 'vue'
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useInfoStore } from '../stores/info'
 import { Calendar, Clock, Eye, MessageSquare, Send, Trash2 } from 'lucide-vue-next'
 import MarkdownRenderer from '../components/MarkdownRenderer.vue'
 import type { Comment } from '../types'
+<<<<<<< HEAD
 import { connectSocket, onCommentAdded, onCommentDeleted, onInfoUpdated, offCommentAdded, offCommentDeleted, offInfoUpdated, disconnectSocket } from '../services/socket'
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
 const router = useRouter()
 const route = useRoute()
@@ -70,6 +77,7 @@ const isOwnComment = (comment: Comment) => {
   return comment.userId === parseInt(authStore.user?.id || '0')
 }
 
+<<<<<<< HEAD
 const isAdmin = () => {
   return authStore.user?.role === 'admin'
 }
@@ -85,6 +93,8 @@ const handleDeleteInfo = async () => {
   }
 }
 
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 const formatDate = (dateString: string) => {
   if (!dateString) return ''
   const date = new Date(dateString)
@@ -97,6 +107,7 @@ const formatDate = (dateString: string) => {
   })
 }
 
+<<<<<<< HEAD
 const handleCommentAdded = async (data: { infoId?: number }) => {
   if (data.infoId === parseInt(infoId.value)) {
     await loadComments()
@@ -128,6 +139,12 @@ onUnmounted(() => {
   offInfoUpdated(handleInfoUpdated)
   disconnectSocket()
 })
+=======
+onMounted(async () => {
+  await loadInfo()
+  await loadComments()
+})
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 </script>
 
 <template>
@@ -148,6 +165,7 @@ onUnmounted(() => {
 
     <main class="max-w-4xl mx-auto px-4 py-6">
       <div v-if="infoStore.currentInfo" class="bg-white rounded-xl shadow-sm p-6 mb-6">
+<<<<<<< HEAD
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">
             <span :class="[
@@ -173,6 +191,23 @@ onUnmounted(() => {
             <Trash2 class="w-4 h-4" />
             <span>删除帖子</span>
           </button>
+=======
+        <div class="flex items-center gap-2 mb-4">
+          <span :class="[
+            'px-3 py-1 text-sm font-medium rounded-full',
+            infoStore.currentInfo.category === 'technology' ? 'bg-blue-100 text-blue-700' :
+            infoStore.currentInfo.category === 'news' ? 'bg-green-100 text-green-700' :
+            infoStore.currentInfo.category === 'product' ? 'bg-purple-100 text-purple-700' :
+            'bg-gray-100 text-gray-700'
+          ]">
+            {{ infoStore.currentInfo.category === 'technology' ? '技术' :
+               infoStore.currentInfo.category === 'news' ? '新闻' :
+               infoStore.currentInfo.category === 'product' ? '产品' : '其他' }}
+          </span>
+          <span v-if="infoStore.currentInfo.isPrivate" class="px-3 py-1 text-sm font-medium rounded-full bg-red-100 text-red-700">
+            私密
+          </span>
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
         </div>
 
         <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ infoStore.currentInfo.title }}</h2>

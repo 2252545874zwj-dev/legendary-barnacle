@@ -4,8 +4,11 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Search from '../views/Search.vue'
 import InfoDetail from '../views/InfoDetail.vue'
+<<<<<<< HEAD
 import AdminPanel from '../views/AdminPanel.vue'
 import Profile from '../views/Profile.vue'
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
 const routes = [
   {
@@ -31,6 +34,7 @@ const routes = [
     name: 'InfoDetail',
     component: InfoDetail,
     meta: { requiresAuth: true }
+<<<<<<< HEAD
   },
   {
     path: '/admin',
@@ -43,6 +47,8 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: { requiresAuth: true }
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   }
 ]
 
@@ -58,8 +64,11 @@ router.beforeEach((to, _from, next) => {
     next('/login')
   } else if (to.meta.guest && authStore.isAuthenticated()) {
     next('/')
+<<<<<<< HEAD
   } else if (to.meta.requiresAdmin && authStore.user?.role !== 'admin') {
     next('/')
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   } else {
     next()
   }

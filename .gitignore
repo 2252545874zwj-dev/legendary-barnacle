@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+<<<<<<< HEAD
 node_modules/
 
 dist/
@@ -17,6 +18,8 @@ dist/
 
 .vscode/
 
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 node_modules
 dist
 dist-ssr

@@ -3,15 +3,21 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+<<<<<<< HEAD
 import http from 'http';
 import { Server } from 'socket.io';
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
 import { initDatabase } from './config/db.js';
 import authRoutes from './routes/auth.js';
 import infoRoutes from './routes/info.js';
 import agentRoutes from './routes/agent.js';
 import uploadRoutes from './routes/upload.js';
+<<<<<<< HEAD
 import adminRoutes from './routes/admin.js';
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -21,6 +27,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
+<<<<<<< HEAD
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
@@ -49,6 +56,17 @@ app.use(helmet());
 
 const corsOptions = {
   origin: allowedOrigins,
+=======
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
+
+// 安全中间件：设置安全 HTTP 头
+app.use(helmet());
+
+// CORS 配置
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || ['http://localhost:5173', 'http://127.0.0.1:5173'],
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -79,7 +97,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/info', infoRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/api/upload', uploadRoutes);
+<<<<<<< HEAD
 app.use('/api/admin', adminRoutes);
+=======
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
@@ -93,10 +114,16 @@ app.use((req, res) => {
 const startServer = async () => {
   try {
     await initDatabase();
+<<<<<<< HEAD
     server.listen(PORT, HOST, () => {
       console.log(`==========================================`);
       console.log(`Server running on http://${HOST}:${PORT}`);
       console.log(`WebSocket server is ready`);
+=======
+    app.listen(PORT, HOST, () => {
+      console.log(`==========================================`);
+      console.log(`Server running on http://${HOST}:${PORT}`);
+>>>>>>> ac58535bee06e561eeda876df089ccdadedcee65
       console.log(`代码版本: 2024-01-15-SEARCH-FIX`);
       console.log(`==========================================`);
     });
